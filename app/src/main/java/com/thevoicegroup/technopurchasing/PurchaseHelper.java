@@ -25,12 +25,12 @@ import java.util.List;
 
 public class PurchaseHelper {
 
-    private String TAG = "PurchaseHelper";
-    private Context context;
-    private BillingClient mBillingClient;
-    private PurchaseHelperListener purchaseHelperListener;
-    private boolean mIsServiceConnected;
-    private int billingSetupResponseCode;
+    public String TAG = "PurchaseHelper";
+    public Context context;
+    public BillingClient mBillingClient;
+    public PurchaseHelperListener purchaseHelperListener;
+    public boolean mIsServiceConnected;
+    public int billingSetupResponseCode;
 
     public PurchaseHelper(Context context, PurchaseHelperListener purchaseHelperListener) {
         this.context = context;
@@ -40,7 +40,7 @@ public class PurchaseHelper {
     }
 
 
-    private void startConnection(Runnable onSuccessRequest) {
+    public void startConnection(Runnable onSuccessRequest) {
         mBillingClient.startConnection(new BillingClientStateListener() {
 
             @Override
@@ -79,21 +79,21 @@ public class PurchaseHelper {
     }
 
 
-    private Runnable getServiceConnectionRequest() {
+    public Runnable getServiceConnectionRequest() {
         return () -> {
             if (purchaseHelperListener != null)
                 purchaseHelperListener.onServiceConnected(billingSetupResponseCode);
         };
     }
 
-    private boolean isSubscriptionSupported() {
+    public boolean isSubscriptionSupported() {
         BillingResult result = mBillingClient.isFeatureSupported(BillingClient.SkuType.SUBS);
         if (result.getResponseCode() != BillingClient.BillingResponseCode.OK)
             Log.w(TAG, "isSubscriptionSupported() got an error response: " + result.getResponseCode());
         return result.getResponseCode() != BillingClient.BillingResponseCode.OK;
     }
 
-    private boolean isInAppSupported() {
+    public boolean isInAppSupported() {
         BillingResult result = mBillingClient.isFeatureSupported(BillingClient.SkuType.INAPP);
         if (result.getResponseCode() != BillingClient.BillingResponseCode.OK)
             Log.w(TAG, "isInAppSupported() got an error response: " + result.getResponseCode());
@@ -189,7 +189,7 @@ public class PurchaseHelper {
     }
 
 
-    private PurchasesUpdatedListener getPurchaseUpdatedListener() {
+    public PurchasesUpdatedListener getPurchaseUpdatedListener() {
         return (result, purchases) -> {
             if (purchaseHelperListener != null)
                 purchaseHelperListener.onPurchasesUpdated(result.getResponseCode(), purchases);
@@ -197,7 +197,7 @@ public class PurchaseHelper {
     }
 
 
-    private void executeServiceRequest(Runnable runnable) {
+    public void executeServiceRequest(Runnable runnable) {
         if (mIsServiceConnected) {
             runnable.run();
         } else {
